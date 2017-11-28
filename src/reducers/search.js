@@ -1,49 +1,48 @@
 import {
-    serialFetchRequest,
-    serialFetchSuccess,
-    serialFetchFailure
-} from '../actions/searcActions';
+    searchRequest,
+    searchSuccess,
+    searchFailure
+} from '../actions/searchActions';
 import { combineReducers } from 'redux';
 import { handleAction, handleActions } from 'redux-actions';
+import { search } from '../api';
 
-const episodes = handleAction(
-    serialFetchSuccess,
+const films = handleAction(
+    searchSuccess,
     (state, action) => action.payload,
     []
 );
 
 const error = handleAction(
-    serialFetchFailure,
+    searchFailure,
     (state, action) => action.error,
     null
 );
 
 const isFetching = handleActions(
     {
-        [serialFetchRequest]: () => true,
-        [serialFfetcsSuccess]: () => false,
-        [serialFetchFailure]: () => false
+        [searchRequest]: () => true,
+        [searchFailure]: () => false
     },
     false
 );
 
 const isFetched = handleActions(
     {
-        [serialFetchRequest]: () => false,
-        [serialFfetcsSuccess]: () => true,
-        [serialFetchFailure]: () => true
+        [searchRequest]: () => false,
+        [searchFailure]: () => false
     },
     false
 );
 
 export default combineReducers({
     error,
-    episodes,
+    films,
     isFetched,
     isFetching
 });
 
-export const getEpisodes = state => state.episodes;
+export const getfilms = state => state.films;
 export const getIsFetching = state => state.isFetching;
 export const getIsFetched = state => state.isFetched;
 export const getError = state => state.error;
