@@ -5,7 +5,6 @@ import {
 } from '../actions/searchActions';
 import { combineReducers } from 'redux';
 import { handleAction, handleActions } from 'redux-actions';
-import { search } from '../api';
 
 const films = handleAction(
     searchSuccess,
@@ -22,6 +21,7 @@ const error = handleAction(
 const isFetching = handleActions(
     {
         [searchRequest]: () => true,
+        [searchSuccess]: () => false,
         [searchFailure]: () => false
     },
     false
@@ -30,7 +30,8 @@ const isFetching = handleActions(
 const isFetched = handleActions(
     {
         [searchRequest]: () => false,
-        [searchFailure]: () => false
+        [searchSuccess]: () => true,
+        [searchFailure]: () => true
     },
     false
 );

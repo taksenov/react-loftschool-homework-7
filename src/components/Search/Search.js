@@ -1,17 +1,85 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { searchRequest } from '../../actions/searchActions';
+
 import './Search.css';
 
-export class Search extends Component {
+class Search extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { searchInput: '' };
+    }
+
+    hanleInputChange = e => {
+        const { name, value } = e.target;
+        this.setState({ [name]: value });
+    }; //hanleInputChange
+
+    handleSearch = () => {
+        this.props.searchRequest(this.state.searchInput);
+    }; //handleSearch
+
     render() {
-        // const { order } = this.props;
+        const { isFetching, films } = this.props;
+        const { searchInput } = this.state;
 
         return (
             <div className="Search">
-                <input type="text" placeholder="Название сериала" />
-                <button>Найти</button>
+                <div className="SearchForm">
+                    <input
+                        type="text"
+                        placeholder="Название сериала"
+                        name="searchInput"
+                        value={searchInput}
+                        onChange={this.hanleInputChange}
+                    />
+                    <button onClick={this.handleSearch}>Найти</button>
+                </div>
+                <div className="SearсhResult">
+                    {isFetching ? (
+                        <div>
+                            <p>Загрузка...</p>
+                        </div>
+                    ) : (
+                        <div>
+                            {films.map(film => (
+                                <article className="results-item" key={film.id}>
+                                    <h3>
+                                        <Link to={`/shows/${film.id}`}>
+                                            {film.name}
+                                        </Link>
+                                    </h3>
+                                    {film.image && (
+                                        <img
+                                            src={film.image.original}
+                                            alt={film.name}
+                                        />
+                                    )}
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: film.summary
+                                        }}
+                                    />
+                                </article>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         );
-    }
+    } //render
 }
 
-export default Search;
+const mapStateToProps = state => ({
+    isFetching: state.search.isFetching,
+    films: state.search.results
+});
+
+const mapDispatchToProps = {
+    searchRequest
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
