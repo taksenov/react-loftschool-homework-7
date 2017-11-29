@@ -23,7 +23,7 @@ class Search extends Component {
     }; //handleSearch
 
     render() {
-        const { isFetching, films } = this.props;
+        const { isFetching, films, test } = this.props;
         const { searchInput } = this.state;
 
         return (
@@ -75,7 +75,7 @@ class Search extends Component {
 
 const mapStateToProps = state => ({
     isFetching: state.search.isFetching,
-    films: state.search.results
+    films: state.search.films
 });
 
 const mapDispatchToProps = {
