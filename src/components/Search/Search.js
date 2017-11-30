@@ -23,7 +23,7 @@ class Search extends Component {
     }; //handleSearch
 
     render() {
-        const { isFetching, films, test } = this.props;
+        const { isFetching, films } = this.props;
         const { searchInput } = this.state;
 
         return (
@@ -54,7 +54,7 @@ class Search extends Component {
                                     </h3>
                                     {film.image && (
                                         <img
-                                            src={film.image.original}
+                                            src={film.image.medium}
                                             alt={film.name}
                                         />
                                     )}
